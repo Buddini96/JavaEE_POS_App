@@ -96,7 +96,7 @@
     $("#tblItem").empty();
 
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/item',
+      url: 'http://localhost:8080/test/pages/item',
       dataType: "json",
 
       success: function (items) {
@@ -120,7 +120,9 @@
   $("#btnItem").click(function (){
     let formData = $("#itemForm").serialize();
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/item',
+      url: 'http://localhost:8080/test/pages/item',
+      setRequestHeader:"Access-Control-Allow-Origin",
+      origin:"*",
       method: "post",
       data: formData,
       success: function (res){
@@ -141,7 +143,7 @@
     let price = $("#itemPrice").val();
 
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/item',
+      url: 'http://localhost:8080/test/pages/item',
       contentType: "application/json",
       method: "put",
       data: JSON.stringify({
@@ -163,7 +165,7 @@
   $("#btnItemDelete").click(function (){
     let code = $("#itemCode").val();
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/item',
+      url: 'http://localhost:8080/test/pages/item',
       contentType: "application/json",
       method: "delete",
       data: JSON.stringify({

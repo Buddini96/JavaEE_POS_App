@@ -104,7 +104,7 @@
     $("#tblCustomer").empty();
     <!--send ajax request to the customer servlet using jQuery-->
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/customer',
+      url: 'http://localhost:8080/test/pages/customer',
       dataType:"json",
       success: function (customers) {
         for (let i in customers) {
@@ -125,9 +125,10 @@
   }
 
   $("#btnCustomer").click(function (){
+
     let formData=$("#customerForm").serialize();
     $.ajax({
-      url:"http://localhost:8080/backEnd/pages/customer",
+      url:"http://localhost:8080/test/pages/customer",
       method:"post",
       data:formData,
       success:function (res){
@@ -145,11 +146,9 @@
   $("#btnCusDelete").click(function(){
     let id = $("#txtCustomerID").val();
     $.ajax({
-      url:'http://localhost:8080/backEnd/pages/customer',
+      url:'http://localhost:8080/backEnd/pages/customer?cusID='+ id,
       method:'delete',
-      data:JSON.stringify({
-        "id":id
-      }),
+
       success:function (resp){
         alert(resp.message);
         getAllCustomers();
@@ -167,7 +166,7 @@
     let salary = $("#txtCustomerSalary").val();
 
     $.ajax({
-      url:'http://localhost:8080/backEnd/pages/customer',
+      url:'http://localhost:8080/test/pages/customer',
       contentType: "application/json",
       method:'put',
       data:JSON.stringify({

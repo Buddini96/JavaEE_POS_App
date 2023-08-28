@@ -13,6 +13,7 @@ import java.sql.*;
 
 @WebServlet(urlPatterns = "/pages/item")
 public class ItemServletAPI extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
@@ -100,7 +101,7 @@ public class ItemServletAPI extends HttpServlet {
 
             ItemDTO itemDTO = new ItemDTO(code,name,qty,price);
 
-            PreparedStatement pstm = connection.prepareStatement("UPDATE item SET name=?, qty=?, price=? WHERE code=?");
+            PreparedStatement pstm = connection.prepareStatement("UPDATE item SET itemName=?, itemQty=?, itemPrice=? WHERE itemCode=?");
             pstm.setObject(4,itemDTO.getCode());
             pstm.setObject(1,itemDTO.getName());
             pstm.setObject(2,itemDTO.getQty());
@@ -120,32 +121,40 @@ public class ItemServletAPI extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JsonReader reader = Json.createReader(req.getReader());
-        JsonObject jsonObject = reader.readObject();
-
-        String code = jsonObject.getString("code");
 
         resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.addHeader("Content-Type","application/backEnd");
+
+        /* JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+*/
+        String code = req.getParameter("itemCode");
+
 
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "1234");
 
-            PreparedStatement pst = connection.prepareStatement("DELETE FROM item WHERE code=?");
+            PreparedStatement pst = connection.prepareStatement("DELETE FROM item WHERE itemCode=?");
             pst.setObject(1,code);
 
             if (pst.executeUpdate() > 0){
                 JsonObjectBuilder response = Json.createObjectBuilder();
                 response.add("state","OK");
-                response.add("message","Successfully Added.!");
+                response.add("message","Successfully Deleted.!");
                 response.add("Data","");
                 resp.getWriter().print(response.build());
             }
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("state", "Error");
+            response.add("message", e.getMessage());
+            response.add("data", "");
+            resp.setStatus(400);
+            resp.getWriter().print(response.build());
         }
-
     }
 
     @Override
@@ -155,4 +164,23 @@ public class ItemServletAPI extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Headers","content-type");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

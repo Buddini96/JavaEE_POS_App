@@ -237,7 +237,7 @@
     $("#selectItemCode").empty();
 
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/purchase-order',
+      url: 'http://localhost:8080/test/pages/purchase-order',
       dataType: "json",
       success: function (codeObject) {
         for (let i in codeObject) {
@@ -262,7 +262,7 @@
     $("#selectCusID").empty();
 
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/purchase-order',
+      url: 'http://localhost:8080/test/pages/purchase-order',
       dataType: "json",
       success: function (cusObject) {
         for (let i in cusObject) {
@@ -289,7 +289,7 @@
     let val = $("#selectCusID").val();
 
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/purchase-order',
+      url: 'http://localhost:8080/test/pages/purchase-order',
       contentType: "application/json",
       method: "put",
       dataType: "json",
@@ -317,7 +317,7 @@
     let val = $("#selectItemCode").val();
 
     $.ajax({
-      url: 'http://localhost:8080/backEnd/pages/purchase-order',
+      url: 'http://localhost:8080/test/pages/purchase-order',
       contentType: "application/json",
       method: "delete",
       dataType: "json",

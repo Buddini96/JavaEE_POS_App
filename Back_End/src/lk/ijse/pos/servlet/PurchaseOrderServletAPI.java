@@ -20,7 +20,7 @@ public class PurchaseOrderServletAPI extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "1234");
 
-            PreparedStatement pstm = connection.prepareStatement("SELECT code FROM item");
+            PreparedStatement pstm = connection.prepareStatement("SELECT itemCode FROM item");
             ResultSet resultSet = pstm.executeQuery();
 
             resp.addHeader("Access-Control-Allow-Origin","*");

@@ -18,9 +18,12 @@ public class CustomerServletAPI extends HttpServlet {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "1234");
-            PreparedStatement pstm = connection.prepareStatement("select * from customer2");
+            PreparedStatement pstm = connection.prepareStatement("select * from customer");
             ResultSet rst = pstm.executeQuery();
-            resp.addHeader("Access-Control-Allow-Origin","*");
+            resp.setContentType("application/json");
+            resp.addHeader("Access-Control-Allow-Origin", "*");
+            resp.addHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT");
+            resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
 
             JsonArrayBuilder allCustomers = Json.createArrayBuilder();
             while (rst.next()) {
@@ -58,15 +61,17 @@ public class CustomerServletAPI extends HttpServlet {
 
         CustomerDTO customerDTO = new CustomerDTO(cusID,cusName,cusAddress,cusSalary);
 
-        resp.addHeader("Content-Type", "application/json");
+        resp.setContentType("application/json");
         resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
 
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "1234");
 
-            PreparedStatement pstm = connection.prepareStatement("insert into customer2 values(?,?,?,?)");
+            PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?,?)");
             pstm.setObject(1, customerDTO.getId());
             pstm.setObject(2, customerDTO.getName());
             pstm.setObject(3, customerDTO.getAddress());
@@ -106,7 +111,7 @@ public class CustomerServletAPI extends HttpServlet {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "1234");
 
-            PreparedStatement pstm = connection.prepareStatement("update customer2 set name=?,address=?,salary=? where id=?");
+            PreparedStatement pstm = connection.prepareStatement("update customer set cusName=?,cusAddress=?,cusSalary=? where cusID=?");
             pstm.setObject(4,customerDTO.getId());
             pstm.setObject(1,customerDTO.getName());
             pstm.setObject(2,customerDTO.getAddress());
@@ -127,19 +132,21 @@ public class CustomerServletAPI extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JsonReader reader = Json.createReader(req.getReader());
-        JsonObject jsonObject = reader.readObject();
+        resp.addHeader("Access-Control-Allow-Origin","*");
+        resp.addHeader("Content-Type", "application/json");
 
-        String id = jsonObject.getString("id");
+//        JsonReader reader = Json.createReader(req.getReader());
+//        JsonObject jsonObject = reader.readObject();
+
+        String id = req.getParameter("cusID");
 
         System.out.println(id);
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/company", "root", "1234");
 
-            resp.addHeader("Access-Control-Allow-Origin","*");
 
-            PreparedStatement pstm = connection.prepareStatement("delete from customer2 where id=?");
+            PreparedStatement pstm = connection.prepareStatement("delete from customer where cusID=?");
             pstm.setObject(1, id);
             if (pstm.executeUpdate() > 0) {
 
@@ -164,11 +171,10 @@ public class CustomerServletAPI extends HttpServlet {
 
     }
 
-    @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Access-Control-Allow-Origin","*");
-        resp.addHeader("Access-Control-Allow-Methods","DELETE");
-        resp.addHeader("Access-Control-Allow-Methods","PUT");
-        resp.addHeader("Access-Control-Allow-Headers","content-type");
-    }
+
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.addHeader("Access-Control-Allow-Methods", "GET,POST,DELETE,PUT");
+        resp.addHeader("Access-Control-Allow-Headers", "Content-Type");
+}
 }
