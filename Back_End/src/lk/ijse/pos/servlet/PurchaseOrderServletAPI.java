@@ -36,7 +36,7 @@ public class PurchaseOrderServletAPI extends HttpServlet {
                 arrayBuilder.add(code.build());
             }
 
-            PreparedStatement cusPstm = connection.prepareStatement("SELECT id FROM customer");
+            PreparedStatement cusPstm = connection.prepareStatement("SELECT cusID FROM customer");
             ResultSet cusDetails = cusPstm.executeQuery();
 
             CustomerDTO customerDTO = new CustomerDTO();
@@ -75,7 +75,7 @@ public class PurchaseOrderServletAPI extends HttpServlet {
             CustomerDTO customerDTO = new CustomerDTO();
             customerDTO.setId(id);
 
-            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM customer WHERE id=?");
+            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM customer WHERE cusID=?");
             pstm.setObject(1,customerDTO.getId());
 
             ResultSet resultSet = pstm.executeQuery();
@@ -116,7 +116,7 @@ public class PurchaseOrderServletAPI extends HttpServlet {
             ItemDTO itemDTO = new ItemDTO();
             itemDTO.setCode(code);
 
-            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM item WHERE code=?");
+            PreparedStatement pstm = connection.prepareStatement("SELECT * FROM item WHERE itemCode=?");
             pstm.setObject(1,itemDTO.getCode());
 
             ResultSet resultSet = pstm.executeQuery();
